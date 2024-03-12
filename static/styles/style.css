@@ -9,17 +9,19 @@ body {
     align-items: center;
 }
 
-header {
+.home-container {
     background-color: #232323;
-    padding: 30px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding: 50px;
     border-radius: 15px;
     font-family: Helvetica, sans-serif;
     font-weight: bold;
     font-size: 50px;
     text-align: center;
+    
 }
 
-header img {
+.home-container img {
     width: 300px;
     height: 300px;
 }
