@@ -1,0 +1,25 @@
+body {
+    background-color: #121212;
+    color: #FFF;
+    width: 100vw;
+    height: 100vh;
+    margin: 0; /* Assurez-vous qu'il n'y a pas de marges par défaut */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header {
+    background-color: #232323;
+    padding: 30px;
+    border-radius: 15px;
+    font-family: Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 50px;
+    text-align: center;
+}
+
+header img {
+    width: 300px;
+    height: 300px;
+}
