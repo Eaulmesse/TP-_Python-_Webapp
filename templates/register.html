@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    {% include "navbar.html" %}
+    
+    <h2>S'inscrire</h2>
+    <form method="post">
+        Nom d'utilisateur: <input type="text" name="name"><br>
+        Mot de passe: <input type="password" name="password"><br>
+        <input type="submit" value="S'inscrire">
+    </form>
+
+
+{% endblock %}
