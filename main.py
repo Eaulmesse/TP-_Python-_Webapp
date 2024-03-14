@@ -1,8 +1,9 @@
 import sqlite3
-from flask import Flask, render_template, request, g, redirect, url_for
+from flask import Flask, render_template, request, g, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 DATABASE = 'database.db'
 
@@ -36,21 +37,46 @@ def register():
         password = request.form['password']
 
         if query_db("SELECT name FROM User WHERE name = ?", [username], one=True) is not None:
-            return "L'utilisateur " + username + " existe déjà "
-
+            return "L'utilisateur " + username + " existe déjà."
         
         db = get_db()
-        cursor = db.cursor()
-        
         query_db("INSERT INTO User (name, password) VALUES (?, ?)", [username , generate_password_hash(password)])
         db.commit()
         
-    
-    
-        cursor.close()
         return redirect(url_for('home'))
         
     return render_template("register.html")
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST': 
+        username = request.form['name']
+        password = request.form['password']
+
+        user = query_db("SELECT * FROM User WHERE name = ?", [username], one=True)
+
+        if user:
+            stored_password = user['password']
+            if check_password_hash(stored_password, password):
+                session['user'] = {'id': user['id'], 'name': user['name']}
+                return redirect(url_for('dashboard'))
+            else: 
+                return "Identifiants invalides"
+        else:
+            return "Utilisateur inexistant"
+        
+    return render_template("login.html")
+
+@app.route("/dashboard")
+def dashboard():
+    if 'user' not in session:
+        return redirect(url_for('login'))  
+    return render_template("dashboard.html")  
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)  
+    return redirect(url_for('home'))
 
 def init_db():
     with app.app_context():

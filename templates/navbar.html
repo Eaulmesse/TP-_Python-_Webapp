@@ -1,10 +1,14 @@
 {% block content %}
-    <nav class="navbar-container">
-        <h1>Suivi finances - GUERIN Théo</h1>
-        <div>
+<nav class="navbar-container">
+    <h1>Suivi finances - GUERIN Théo</h1>
+    <div>
+        {% if 'user' in session %}
+            <span>Connecté avec le compte {{ session['user']['name'] }}</span>  
+            <a href="/logout">Logout</a>
+        {% else %}
             <a href="/login">Login</a>
-            <a href="/register">register</a>
-        </div>
-        
-    </nav>
+            <a href="/register">Register</a>
+        {% endif %}
+    </div>
+</nav>
 {% endblock %}
