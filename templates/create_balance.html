@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Create{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    {% include "navbar.html" %}
+    
+    <h2>Créer un solde</h2>
+    <form method="post">
+        Montant du solde: <input type="number" name="value" step="any"><br>
+        <input type="submit" value="Créer">
+    </form>
+
+{% endblock %}

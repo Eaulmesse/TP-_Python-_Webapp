@@ -5,8 +5,43 @@
 {% endblock %}
 {% block content %}
     {% include "navbar.html" %}
+
+    <div class="balance-container">
+        <h2>Mon solde</h2>
+
+        <a href="{{ url_for('create_balance') }}">Ajouter un solde</a> 
+        
+
+        
+        {% for balanceUser in balance %}
+            <div class="expense">
+                <p>{{ balanceUser.value }} €</p>
+                
+            </div>
+        {% endfor %}    
+        
+        
+    </div>
     
-    
+    <div class="expense-container">
+        <h2>Mes Dépenses</h2>
+
+        <a href="{{ url_for('create_expense') }}">Ajouter une dépense</a> 
+
+        <ul>
+            {% for expense in expenses %}
+            <div class="expense">
+                <li>{{ expense.name }}: {{ expense.value }}€</li>
+                <a href="{{ url_for('delete_expense', expense_id=expense.id) }}">❌</a>
+            </div>
+                
+            {% else %}
+                <li>Aucune dépense enregistrée</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
 
 
 {% endblock %}

@@ -5,6 +5,7 @@
 
 body {
     background-color: #121212;
+    color: #FFF;
 }
 
 .navbar-container {
@@ -14,7 +15,6 @@ body {
     width: 100%;
     height: 100px;
     background-color: #232323;
-    color: #FFF;
     font-family: Helvetica, sans-serif;
     font-weight: bold;
 }
@@ -32,12 +32,33 @@ body {
     font-weight: bold;
     font-size: 50px;
     text-align: center;
-    color: #FFF;
 }
 
 .home-container img {
     width: 300px;
     height: 300px;
+}
+
+.expense-container {
+    padding: 10px;
+    margin: 0px 30px 0px 30px;
+
+}
+
+.expense {
+    font-weight: bold;
+    font-family: Helvetica, sans-serif;
+    list-style: none;
+    border-radius: 15px;
+    padding: 10px;
+    height: 60px;
+    width: 300px;
+    background-color: #606060;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    box-shadow: rgb(124, 124, 124) 1.95px 1.95px 2.6px;
 }
 
 
