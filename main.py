@@ -67,16 +67,37 @@ def login():
         
     return render_template("login.html")
 
-@app.route("/dashboard")
-def dashboard():
-    if 'user' not in session:
-        return redirect(url_for('login'))  
-    return render_template("dashboard.html")  
-
 @app.route('/logout')
 def logout():
     session.pop('user', None)  
     return redirect(url_for('home'))
+
+@app.route("/dashboard")
+def dashboard():
+    if 'user' not in session:
+        return redirect(url_for('login'))  
+    return render_template("dashboard.html") 
+
+@app.route("/dashboard/create/expense", methods=['GET', 'POST'])
+def createExpense():
+    
+    if 'user' not in session:
+        return redirect(url_for('login'))  
+    
+    if request.method == 'POST':
+        name = request.form['name']
+        value = request.form['value']
+        user_id = session['user']['id']
+        
+        db = get_db()
+        query_db("INSERT INTO Frais (name, value, user_id) VALUES (?, ?, ?)", [name , value, user_id])
+        db.commit()
+        
+        return redirect(url_for('home'))
+
+    return render_template("create_expense.html")   
+
+
 
 def init_db():
     with app.app_context():

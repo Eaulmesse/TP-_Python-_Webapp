@@ -14,6 +14,6 @@ CREATE TABLE Frais (
     id INTEGER PRIMARY KEY,
     user_id INTEGER NOT NULL,
     name TEXT NOT NULL,
-    content TEXT,
+    value INTEGER NOT NULL,
     FOREIGN KEY(user_id) REFERENCES User(id)
 );
