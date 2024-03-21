@@ -75,12 +75,17 @@ def logout():
 @app.route("/dashboard")
 def dashboard():
     if 'user' not in session:
-        return redirect(url_for('login'))  
-    
+        return redirect(url_for('login'))
+
     expenses = query_db("SELECT * FROM Frais WHERE user_id = ?", [session['user']['id']])
     balance = query_db("SELECT * FROM Solde WHERE user_id = ?", [session['user']['id']])
 
-    return render_template("dashboard.html", expenses=expenses, balance=balance)
+    total_expenses = sum(expense['value'] for expense in expenses)  
+    total_balance = balance[0]['value'] if balance else 0 
+    remaining_balance = total_balance - total_expenses
+
+    return render_template("dashboard.html", expenses=expenses, balance=balance, remaining_balance=remaining_balance)
+
 
 
 @app.route("/dashboard/create/expense", methods=['GET', 'POST'])
@@ -114,17 +119,17 @@ def delete_expense(expense_id):
     return redirect(url_for('dashboard'))
 
 @app.route("/dashboard/create/balance", methods=['GET', 'POST'])
-def create_balance():  # Python utilise des noms de fonctions en minuscules avec des underscores
+def create_balance():  
     if 'user' not in session:
         return redirect(url_for('login'))  
     
-    # Vérifiez d'abord si l'utilisateur a déjà un solde.
+    
     existing_balance = query_db("SELECT * FROM Solde WHERE user_id = ?", [session['user']['id']], one=True)
     if existing_balance:
-        # Rediriger l'utilisateur vers le tableau de bord s'il a déjà un solde
+        
         return redirect(url_for('dashboard'))
     
-    # Créer un nouveau solde si la méthode est POST et qu'aucun solde n'existe.
+    
     if request.method == 'POST':
         value = request.form['value']
         db = get_db()
@@ -132,8 +137,19 @@ def create_balance():  # Python utilise des noms de fonctions en minuscules avec
         db.commit()
         return redirect(url_for('dashboard'))
 
-    # Si la méthode n'est pas POST ou si aucun autre cas n'est rencontré, afficher le formulaire de création du solde.
+    
     return render_template("create_balance.html")
+
+@app.route('/delete/balance/<int:balance_id>')
+def delete_balance(balance_id):
+    if 'user' not in session:
+        return redirect(url_for('login')) 
+
+    db = get_db()
+    db.execute('DELETE FROM Solde WHERE id = ?', [balance_id])
+    db.commit()   
+
+    return redirect(url_for('dashboard'))
 
 def init_db():
     with app.app_context():
