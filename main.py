@@ -7,6 +7,7 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 DATABASE = "database.db"
 
+# DATABASE init
 
 def get_db():
     db = getattr(g, "_database", None)
@@ -30,10 +31,12 @@ def query_db(query, args=(), one=False):
     return (rv[0] if rv else None) if one else rv
 
 
+
 @app.route("/")
 def home():
     return render_template("home.html")
 
+# Authentification
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -85,7 +88,9 @@ def logout():
     session.pop("user", None)
     return redirect(url_for("home"))
 
-
+# If not authenticate, the user return to login route
+# The dashboard allow you to list your expense and see how much it cost
+# You can add your balance and track how it goes minus your expenses
 @app.route("/dashboard")
 def dashboard():
     if "user" not in session:
@@ -107,7 +112,7 @@ def dashboard():
         remaining_balance=remaining_balance,
     )
 
-
+# You can create an expense here
 @app.route("/dashboard/create/expense", methods=["GET", "POST"])
 def create_expense():
 
@@ -130,7 +135,7 @@ def create_expense():
 
     return render_template("create_expense.html")
 
-
+#  The delete_balance method use the id of the selected expense and delete it from the db
 @app.route("/delete/<int:expense_id>")
 def delete_expense(expense_id):
     if "user" not in session:
@@ -167,7 +172,7 @@ def create_balance():
 
     return render_template("create_balance.html")
 
-
+# Same as the delete_expense
 @app.route("/delete/balance/<int:balance_id>")
 def delete_balance(balance_id):
     if "user" not in session:
